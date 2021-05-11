@@ -35,6 +35,7 @@ pipeline {
                                         sh '''
                                         docker network create $IMAGE_NAME
 					echo ${PWD}
+					ls -l simple_api
 					docker run -d -p 5000:5000 -v ${PWD}/simple_api:/data --network $IMAGE_NAME --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
                                         docker run -d -p 7000:80 --network $IMAGE_NAME -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $IMAGE_NAME_BIS php:apache
 					'''
