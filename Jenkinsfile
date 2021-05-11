@@ -33,7 +33,6 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
-					docker network rm $IMAGE_NAME
                                         docker network create $IMAGE_NAME
 					docker run -d -p 5000:5000 -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network $IMAGE_NAME --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
                                         docker run -d -p 80:80 --network $IMAGE_NAME -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $IMAGE_NAME_BIS php:apache
@@ -69,6 +68,7 @@ pipeline {
 					sh '''
 					docker rm -vf ${IMAGE_NAME}
                                         docker rm -vf ${IMAGE_NAME_BIS}
+					docker network rm $IMAGE_NAME
 					'''
 				}
 			}
