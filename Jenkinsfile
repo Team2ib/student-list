@@ -1,6 +1,7 @@
 pipeline {
 	environment {
 		IMAGE_NAME = "student_list"
+                IMAGE_NAME_BIS = "website"
 		IMAGE_TAG = "latest"
 		STAGING = "team2-staging"
 		PRODUCTION = "team2-production"
@@ -33,8 +34,8 @@ pipeline {
                                 script {
                                         sh '''
                                         docker network create student_list
-					docker run -d -p 5000:5000 -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network --name student_list student_list 132.145.77.137:5000/team2/student_list
-                                        docker run -d -p 80:80 --network student_list -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name website php:apache
+					docker run -d -p 5000:5000 -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network $IMAGE_NAME --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
+                                        docker run -d -p 80:80 --network $IMAGE_NAME -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $IMAGE_NAME_BIS php:apache
 					'''
                                 }
                         }
@@ -55,6 +56,18 @@ pipeline {
 				script {
 					sh '''
 					curl http://172.17.0.1 | grep -q "Student Checking App"
+					'''
+				}
+			}
+		}
+
+		stage('Clean Container') {
+			agent any
+			steps {
+				script {
+					sh '''
+					docker rm -vf ${IMAGE_NAME}
+                                        docker rm -vf ${IMAGE_NAME_BIS}
 					'''
 				}
 			}
