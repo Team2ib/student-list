@@ -36,8 +36,8 @@ pipeline {
                                         docker network create $IMAGE_NAME
 					echo ${PWD}
 					ls -l simple_api
-					cat simple_api/student_age.json > /student_age.json.tmp
-					docker run -d -p 5000:5000 -v /student_age.json.tmp:/data/student_age.json --network $IMAGE_NAME --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
+					cat simple_api/student_age.json > student_age.json.tmp
+					docker run -d -p 5000:5000 -v ${PWD}/student_age.json.tmp:/data/student_age.json --network $IMAGE_NAME --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
                                         docker run -d -p 7000:80 --network $IMAGE_NAME -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $IMAGE_NAME_BIS php:apache
 					'''
                                 }
