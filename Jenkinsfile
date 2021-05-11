@@ -12,7 +12,7 @@ pipeline {
 		stage('Build image') {
 			agent {
 				docker {
-						image 'docker'
+						image 'docker:dind'
 				}
 			}
 			steps {
