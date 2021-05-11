@@ -34,6 +34,7 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
+					docker rm -vf ${IMAGE_NAME} || echo 0
 					docker run -d -p 5000:5000 -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network $JENKINS_CONTAINER_NETWORK --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG 
 					'''
                                 }
@@ -58,6 +59,7 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
+					docker rm -vf ${FRONT_CONTAINER_NAME} || echo 0
 					docker run -d -p 7000:80 --network $JENKINS_CONTAINER_NETWORK -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $FRONT_CONTAINER_NAME php:apache
 					'''
                                 }
