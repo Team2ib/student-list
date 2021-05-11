@@ -33,9 +33,10 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
-                                        docker network create student_list
+                                        docker network create $IMAGE_NAME
+					echo ${PWD}
 					docker run -d -p 5000:5000 -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network $IMAGE_NAME --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
-                                        docker run -d -p 80:80 --network $IMAGE_NAME -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $IMAGE_NAME_BIS php:apache
+                                        docker run -d -p 7000:80 --network $IMAGE_NAME -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $IMAGE_NAME_BIS php:apache
 					'''
                                 }
                         }
@@ -55,7 +56,7 @@ pipeline {
 			steps {
 				script {
 					sh '''
-					curl http://172.17.0.1 | grep -q "Student Checking App"
+					curl http://172.17.0.1:7000 | grep -q "Student Checking App"
 					'''
 				}
 			}
@@ -68,6 +69,7 @@ pipeline {
 					sh '''
 					docker rm -vf ${IMAGE_NAME}
                                         docker rm -vf ${IMAGE_NAME_BIS}
+					docker network rm $IMAGE_NAME
 					'''
 				}
 			}
