@@ -17,7 +17,7 @@ pipeline {
 			}
 			steps {
 				script {
-					sh 'docker build -t $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG .'
+					sh 'docker build -t $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG simple_api'
 				}
 			}
 		}
