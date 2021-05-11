@@ -1,7 +1,8 @@
 pipeline {
 	environment {
+		JENKINS_CONTAINER_NETWORK = "jenkins_default"
 		IMAGE_NAME = "student_list"
-                IMAGE_NAME_BIS = "website"
+                FRONT_CONTAINER_NAME = "website"
 		IMAGE_TAG = "latest"
 		STAGING = "team2-staging"
 		PRODUCTION = "team2-production"
@@ -33,8 +34,7 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
-                                        docker network create $IMAGE_NAME
-					docker run -d -p 5000:5000 -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network $IMAGE_NAME --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG 
+					docker run -d -p 5000:5000 -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network $JENKINS_CONTAINER_NETWORK --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG 
 					'''
                                 }
                         }
@@ -44,8 +44,22 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
-					curl -u toto:python http://172.17.0.1:5000/pozos/api/v1.0/get_student_ages | grep -q "alice"
+					curl -u toto:python http://$IMAGE_NAME:5000/pozos/api/v1.0/get_student_ages | grep -q "alice"
                                         '''
+                                }
+                        }
+                }
+                stage('run website container') {
+                        agent {
+                                docker {
+                                                image 'docker:dind'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh '''
+					docker run -d -p 7000:80 --network $JENKINS_CONTAINER_NETWORK -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $FRONT_CONTAINER_NAME php:apache
+					'''
                                 }
                         }
                 }
@@ -54,20 +68,18 @@ pipeline {
 			steps {
 				script {
 					sh '''
-					curl http://172.17.0.1:7000 | grep -q "Student Checking App"
+					curl http://$FRONT_CONTAINER_NAME:7000 | grep -q "Student Checking App"
 					'''
 				}
 			}
 		}
-
 		stage('Clean Container') {
 			agent any
 			steps {
 				script {
 					sh '''
 					docker rm -vf ${IMAGE_NAME}
-                                        docker rm -vf ${IMAGE_NAME_BIS}
-					docker network rm $IMAGE_NAME
+                                        docker rm -vf ${FRONT_CONTAINER_NAME}
 					'''
 				}
 			}
