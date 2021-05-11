@@ -1,0 +1,68 @@
+--- 
+- name: "student_list installation"
+  hosts: prod
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Remove containers api
+      docker_container:
+        name: "student_list"
+        image: "132.145.77.137:5000/team2/student_list"
+        state: absent
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
+
+    - name: Remove containers website
+      docker_container:
+        name: "website"
+        image: "php:apache"
+        state: absent
+
+    - name: "Allow insecure registry"
+      copy:
+        content: { "insecure-registries":["132.145.77.137:5000"] }
+        dest: /etc/docker/daemon.json
+      become: yes
+
+    - name: Start and enable the Docker daemon
+      service:
+        name=docker
+        state=restarted
+        enabled=yes
+      become: yes
+
+    - name: Log into private registry and force re-authorization
+      community.docker.docker_login:
+        registry_url: 132.145.77.137:5000
+        username: team2
+        password: GeorgeWashington
+        reauthorize: yes
+
+    - name: Generate student_age.json
+      template:
+        src: ../simple_api/student_age.json
+        dest: ~/student_age.json
+
+    - name: Create default containers
+      docker_container:
+        name: "student_list"
+        image: "132.145.77.137:5000/team2/student_list"
+        pull: yes
+        volumes:
+          - ~/student_age.json:/data/student_age.json
+
+    - name: Create default containers
+      docker_container:
+        name: "website"
+        image: "php:apache"
+        ports: 80:80
+        pull: yes
+
+    - name: "Create a network"
+      docker_network:
+        name: "student_list"
+        connected:
+          - website
+          - student_list
+        appends: yes
+...
