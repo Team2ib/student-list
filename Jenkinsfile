@@ -35,7 +35,7 @@ pipeline {
                                 script {
                                         sh '''
 					docker rm -vf ${IMAGE_NAME} || echo 0
-					docker run -d -p 5000:5000 -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network $JENKINS_CONTAINER_NETWORK --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG 
+					docker run -d -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network $JENKINS_CONTAINER_NETWORK --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG 
 					'''
                                 }
                         }
@@ -60,7 +60,7 @@ pipeline {
                                 script {
                                         sh '''
 					docker rm -vf ${FRONT_CONTAINER_NAME} || echo 0
-					docker run -d -p 7000:80 --network $JENKINS_CONTAINER_NETWORK -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $FRONT_CONTAINER_NAME php:apache
+					docker run -d --network $JENKINS_CONTAINER_NETWORK -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $FRONT_CONTAINER_NAME php:apache
 					'''
                                 }
                         }
@@ -70,7 +70,7 @@ pipeline {
 			steps {
 				script {
 					sh '''
-					curl http://$FRONT_CONTAINER_NAME:7000 | grep -q "Student Checking App"
+					curl http://$FRONT_CONTAINER_NAME | grep -q "Student Checking App"
 					'''
 				}
 			}
