@@ -28,14 +28,13 @@ pipeline {
                         agent {
                                 docker {
                                                 image 'docker:dind'
-						args '-v ${PWD}/simple_api/student_age.json:/data/student_age.json'
                                 }
                         }
                         steps {
                                 script {
                                         sh '''
                                         docker network create $IMAGE_NAME
-					docker run -d -p 5000:5000 -v /data/student_age.json:/data/student_age.json --network $IMAGE_NAME --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG 
+					docker run -d -p 5000:5000 -v ${PWD}/simple_api/student_age.json:/data/student_age.json --network $IMAGE_NAME --name $IMAGE_NAME $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG 
 					'''
                                 }
                         }
