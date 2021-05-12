@@ -90,7 +90,7 @@ pipeline {
 			agent { 
 				docker {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest' 
-					args '-v $HOME/.ssh:/root/.ssh'
+					args '-v /var/jenkins_home/.ssh:/root/.ssh'
 				} 
 			}
 			steps {
