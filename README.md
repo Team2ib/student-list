@@ -1,4 +1,4 @@
-[![Build Status](http://132.145.60.163/buildStatus/icon?job=jenkins-student_list)](http://132.145.60.163/job/jenkins-student_list/)
+[![Build Status](http://140.238.67.208/buildStatus/icon?job=student_list_master)](http://140.238.67.208/job/student_list_master/)
 
 # student-list 
 This repo is a simple application to list student with a webserver (PHP) and API (Flask)
