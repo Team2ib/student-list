@@ -13,7 +13,7 @@ pipeline {
 	}
 	agent none
 	stages {
-		stage('Build image') {
+		stage('Build Image') {
 			agent {
 				docker {
 						image 'docker:dind'
@@ -25,7 +25,7 @@ pipeline {
 				}
 			}
 		}
-                stage('run api container') {
+                stage('Run Api Container') {
                         agent {
                                 docker {
                                                 image 'docker:dind'
@@ -40,7 +40,7 @@ pipeline {
                                 }
                         }
                 }
-                stage('Test api container') {
+                stage('Test Api Container') {
                         agent any
                         steps {
                                 script {
@@ -50,7 +50,7 @@ pipeline {
                                 }
                         }
                 }
-                stage('run website container') {
+                stage('Run Website Container') {
                         agent {
                                 docker {
                                                 image 'docker:dind'
@@ -65,7 +65,7 @@ pipeline {
                                 }
                         }
                 }
-		stage('Test website container') {
+		stage('Test Website Container') {
 			agent any
 			steps {
 				script {
@@ -86,7 +86,7 @@ pipeline {
 				}
 			}
 		}
-		stage('Ansible deploy staging') {
+		stage('Ansible Deploy Staging') {
 			agent { 
 				docker {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
@@ -94,7 +94,7 @@ pipeline {
 				} 
 			}
 			environment {
-				SSH_SECRET = credentials('ssh_private_key_2')
+				SSH_SECRET = credentials('ssh_private_key')
 			}
 			steps {
 				script {
@@ -102,18 +102,13 @@ pipeline {
 					cd ansible
 					cp \$SSH_SECRET id_rsa
 					chmod 600 id_rsa
-					cat id_rsa
-					ls -lrat
-					id
-					pwd
-					ansible all -m ping -vvv -e local_tmp=/tmp
 					ansible-playbook -i staging.yml install-docker.yml --private-key id_rsa
 					ansible-playbook -i staging.yml student_list.yml --private-key id_rsa
 					'''
 				}
 			}
 		}
-		stage('Tests staging deployment') {
+		stage('Test Staging Deployment') {
 			agent {
 				docker {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
@@ -121,7 +116,7 @@ pipeline {
 				}
 			}
 			environment {
-				SSH_SECRET = credentials('ssh_private_key_2')
+				SSH_SECRET = credentials('ssh_private_key')
 			}
 			steps {
 				script {
@@ -134,7 +129,7 @@ pipeline {
 				}
 			}
 		}
-		stage('Ansible deploy production') {
+		stage('Ansible Deploy Production') {
 			agent { 
 				docker {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
@@ -142,7 +137,7 @@ pipeline {
 				} 
 			}
 			environment {
-				SSH_SECRET = credentials('ssh_private_key_2')
+				SSH_SECRET = credentials('ssh_private_key')
 			}
 			steps {
 				script {
@@ -156,7 +151,7 @@ pipeline {
 				}
 			}
 		}
-		stage('Tests staging production') {
+		stage('Test Production Deployment') {
 			agent {
 				docker {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
@@ -164,7 +159,7 @@ pipeline {
 				}
 			}
 			environment {
-				SSH_SECRET = credentials('ssh_private_key_2')
+				SSH_SECRET = credentials('ssh_private_key')
 			}
 			steps {
 				script {
