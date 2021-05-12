@@ -7,7 +7,7 @@ pipeline {
 		STAGING = "team2-staging"
 		PRODUCTION = "team2-production"
 		IMAGE_REPO = "team2"
-		IMAGE_REGISTRY = "132.145.77.137:5000"
+		IMAGE_REGISTRY = "portus.wtpho.xyz"
                 API_USERNAME = "toto"
                 API_PASSWORD = "python"
 	}
@@ -98,9 +98,7 @@ pipeline {
 			steps {
 				script {
 					sh '''
-					mkdir -p /etc/docker
-					echo {"insecure-registries" : ["132.145.77.137:5000"]} > /etc/docker/daemon.json
-					docker login --username ${PORTUS_SECRET_USR} --password ${PORTUS_SECRET_PSW} 132.145.77.137:5000
+					docker login --username ${PORTUS_SECRET_USR} --password ${PORTUS_SECRET_PSW} $IMAGE_REGISTRY
 					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
 					'''
 				}
