@@ -86,5 +86,67 @@ pipeline {
 				}
 			}
 		}
+		stage('Ansible deploy staging') {
+			agent { 
+				docker {
+					image 'registry.gitlab.com/robconnolly/docker-ansible:latest' 
+				} 
+			}
+			steps {
+				script {
+					sh '''
+					cd ansible
+					ansible-playbook -i staging.yml install-docker.yml
+					ansible-playbook -i staging.yml student_list.yml
+					'''
+				}
+			}
+		}
+		stage('Tests staging deployment') {
+			agent {
+				docker {
+					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+				}
+			}
+			steps {
+				script {
+					sh '''
+					cd ansible
+					ansible-playbook -i staging.yml tests.yml
+					'''
+				}
+			}
+		}
+		stage('Ansible deploy production') {
+			agent { 
+				docker {
+					image 'registry.gitlab.com/robconnolly/docker-ansible:latest' 
+				} 
+			}
+			steps {
+				script {
+					sh '''
+					cd ansible
+					ansible-playbook -i production.yml install-docker.yml
+					ansible-playbook -i production.yml student_list.yml
+					'''
+				}
+			}
+		}
+		stage('Tests staging production') {
+			agent {
+				docker {
+					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+				}
+			}
+			steps {
+				script {
+					sh '''
+					cd ansible
+					ansible-playbook -i production.yml tests.yml
+					'''
+				}
+			}
+		}
 	}
 }

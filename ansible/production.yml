@@ -1,0 +1,4 @@
+prod:
+  hosts:
+    production:
+      ansible_host: 10.0.0.163
