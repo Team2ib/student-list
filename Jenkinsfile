@@ -86,17 +86,15 @@ pipeline {
 				}
 			}
 		}
-		stage('Push image on dockerhub') {
+		stage('Push Image on Private Registry') {
                         agent any
-/*			environment {
+			environment {
 				PORTUS_SECRET = credentials('portus_secret')
-			}*/
+			}
 			steps {
 				script {
 					sh '''
-					docker login -u team2 -p GeorgeWashington portus.wtpho.xyz
-					cat /root/.docker/config.json
-					docker push portus.wtpho.xyz/team2/student_list:latest
+					docker login -u $PORTUS_SECRET_USR -p $PORTUS_SECRET_PSW $IMAGE_REGISTRY
 					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
 					'''
 				}
