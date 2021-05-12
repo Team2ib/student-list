@@ -89,7 +89,8 @@ pipeline {
 		stage('Ansible deploy staging') {
 			agent { 
 				docker {
-					image 'dirane/docker-ansible:latest' 
+					image 'dirane/docker-ansible:latest'
+					args '-u root --privileged'
 				} 
 			}
 			environment {
