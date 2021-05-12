@@ -1,0 +1,12 @@
+---
+- name: "Tests"
+  hosts: staging
+  tasks:
+    - name: Test availability slave
+      uri:
+        url: http://{{ ansible_host }}
+        method: GET
+        return_content: yes
+      register: this
+      failed_when: "'Student Checking App' not in this.content"
+...
