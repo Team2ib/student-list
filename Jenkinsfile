@@ -90,7 +90,6 @@ pipeline {
                         agent {
                                 docker {
                                                 image 'docker:dind'
-						args '--insecure-registry'
                                 }
                         }
 			environment {
@@ -99,6 +98,8 @@ pipeline {
 			steps {
 				script {
 					sh '''
+					mkdir -p /etc/docker
+					echo {"insecure-registries" : ["132.145.77.137:5000"]} > /etc/docker/daemon.json
 					docker login --username ${PORTUS_SECRET_USR} --password ${PORTUS_SECRET_PSW} 132.145.77.137:5000
 					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
 					'''
