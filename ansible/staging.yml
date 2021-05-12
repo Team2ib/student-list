@@ -2,5 +2,3 @@ prod:
   hosts:
     staging:
       ansible_host: 10.0.0.210
-    production:
-      ansible_host: 10.0.0.163
