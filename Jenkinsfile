@@ -89,8 +89,8 @@ pipeline {
 		stage('Ansible deploy staging') {
 			agent { 
 				docker {
-					image 'dirane/docker-ansible:latest'
-					args '-u root --privileged'
+					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+					args '-u root'
 				} 
 			}
 			environment {
@@ -117,6 +117,7 @@ pipeline {
 			agent {
 				docker {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+					args '-u root'					
 				}
 			}
 			environment {
@@ -136,7 +137,8 @@ pipeline {
 		stage('Ansible deploy production') {
 			agent { 
 				docker {
-					image 'registry.gitlab.com/robconnolly/docker-ansible:latest' 
+					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+					args '-u root'
 				} 
 			}
 			environment {
@@ -158,6 +160,7 @@ pipeline {
 			agent {
 				docker {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
+					args '-u root'
 				}
 			}
 			environment {
