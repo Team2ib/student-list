@@ -89,7 +89,7 @@ pipeline {
 		stage('Ansible deploy staging') {
 			agent { 
 				docker {
-					image 'registry.gitlab.com/robconnolly/docker-ansible:latest' 
+					image 'dirane/docker-ansible:latest' 
 				} 
 			}
 			environment {
