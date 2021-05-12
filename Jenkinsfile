@@ -99,6 +99,7 @@ pipeline {
 				script {
 					sh '''
 					docker login --username ${PORTUS_SECRET_USR} --password ${PORTUS_SECRET_PSW} $IMAGE_REGISTRY
+					cat /root/.docker/config.json
 					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
 					'''
 				}
