@@ -86,6 +86,24 @@ pipeline {
 				}
 			}
 		}
+		stage('Push image on dockerhub') {
+                        agent {
+                                docker {
+                                                image 'docker:dind'
+                                }
+                        }
+			environment {
+				PORTUS_SECRET = credentials('portus_secret')
+			}
+			steps {
+				script {
+					sh '''
+					docker login --username ${PORTUS_SECRET_USR} --password ${PORTUS_SECRET_PSW} 132.145.77.137:5000
+					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
+					'''
+				}
+			}
+		}
 		stage('Ansible Deploy Staging') {
 			agent { 
 				docker {
