@@ -94,6 +94,7 @@ pipeline {
 			steps {
 				script {
 					sh '''
+					docker login -u ${PORTUS_SECRET_USR} -p ${PORTUS_SECRET_PSW} ${IMAGE_REGISTRY}
 					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
 					'''
 				}
