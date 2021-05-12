@@ -104,7 +104,7 @@ pipeline {
 					cat id_rsa
 					ls -lrat
 					id
-					ansible all -m ping -i hosts --private-key id_rsa -vvv
+					ansible all -m ping -i staging.yml --private-key id_rsa -vvv
 					ansible-playbook -i staging.yml install-docker.yml --private-key id_rsa -vvv
 					ansible-playbook -i staging.yml student_list.yml --private-key id_rsa -vvv
 					'''
