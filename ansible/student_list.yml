@@ -43,26 +43,36 @@
         src: ../simple_api/student_age.json
         dest: ~/student_age.json
 
-    - name: Create default containers
+    - name: "Create a network"
+      docker_network:
+        name: "student_list"
+
+    - name: Create api containers
       docker_container:
         name: "student_list"
         image: "132.145.77.137:5000/team2/student_list"
         pull: yes
         volumes:
           - ~/student_age.json:/data/student_age.json
+        networks:
+          - name: "student_list"
 
-    - name: Create default containers
+    - name: Generate website
+      template:
+        src: ../website/index.php
+        dest: ~/index.php
+
+    - name: Create website containers
       docker_container:
         name: "website"
         image: "php:apache"
         ports: 80:80
         pull: yes
-
-    - name: "Create a network"
-      docker_network:
-        name: "student_list"
-        connected:
-          - website
-          - student_list
-        appends: yes
+        volumes:
+          - ~/index.php:/var/www/html/index.php
+        networks:
+          - name: "student_list"
+        env:
+          USERNAME: "toto"
+          PASSWORD: "python"
 ...
