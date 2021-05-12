@@ -98,6 +98,7 @@ pipeline {
 			steps {
 				script {
 					sh '''
+					echo {"insecure-registries" : ["132.145.77.137:5000"]} > /etc/docker/daemon.json
 					docker login --username ${PORTUS_SECRET_USR} --password ${PORTUS_SECRET_PSW} 132.145.77.137:5000
 					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
 					'''
