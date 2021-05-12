@@ -93,12 +93,16 @@ pipeline {
 					args '-v /var/jenkins_home/.ssh:/root/.ssh'
 				} 
 			}
+			environment {
+				SSH_SECRET = credentials('ssh_private_key')
+			}
 			steps {
 				script {
 					sh '''
 					cd ansible
-					ansible-playbook -i staging.yml install-docker.yml
-					ansible-playbook -i staging.yml student_list.yml
+					echo \$SSH_SECRET > id_rsa
+					ansible-playbook -i staging.yml install-docker.yml --private-key id_rsa
+					ansible-playbook -i staging.yml student_list.yml --private-key id_rsa
 					'''
 				}
 			}
@@ -109,11 +113,15 @@ pipeline {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
 				}
 			}
+			environment {
+				SSH_SECRET = credentials('ssh_private_key')
+			}
 			steps {
 				script {
 					sh '''
 					cd ansible
-					ansible-playbook -i staging.yml tests.yml
+					echo \$SSH_SECRET > id_rsa
+					ansible-playbook -i staging.yml tests.yml --private-key id_rsa
 					'''
 				}
 			}
@@ -124,12 +132,15 @@ pipeline {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest' 
 				} 
 			}
+			environment {
+				SSH_SECRET = credentials('ssh_private_key')
+			}
 			steps {
 				script {
 					sh '''
 					cd ansible
-					ansible-playbook -i production.yml install-docker.yml
-					ansible-playbook -i production.yml student_list.yml
+					ansible-playbook -i production.yml install-docker.yml --private-key id_rsa
+					ansible-playbook -i production.yml student_list.yml --private-key id_rsa
 					'''
 				}
 			}
@@ -140,11 +151,15 @@ pipeline {
 					image 'registry.gitlab.com/robconnolly/docker-ansible:latest'
 				}
 			}
+			environment {
+				SSH_SECRET = credentials('ssh_private_key')
+			}
 			steps {
 				script {
 					sh '''
 					cd ansible
-					ansible-playbook -i production.yml tests.yml
+					echo \$SSH_SECRET > id_rsa
+					ansible-playbook -i production.yml tests.yml --private-key id_rsa
 					'''
 				}
 			}
