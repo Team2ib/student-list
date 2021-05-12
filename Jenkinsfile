@@ -87,11 +87,7 @@ pipeline {
 			}
 		}
 		stage('Push image on dockerhub') {
-                        agent {
-                                docker {
-                                                image 'docker:dind'
-                                }
-                        }
+                        agent any
 			environment {
 				PORTUS_SECRET = credentials('portus_secret')
 			}
@@ -99,9 +95,6 @@ pipeline {
 				script {
 					sh '''
 					docker login --username ${PORTUS_SECRET_USR} --password ${PORTUS_SECRET_PSW} $IMAGE_REGISTRY
-					cat /root/.docker/config.json
-					id
-					whoami
 					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
 					'''
 				}
