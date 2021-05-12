@@ -98,9 +98,9 @@ pipeline {
 			}
 			steps {
 				script {
+					sh 'cd ansible'
+					sh 'echo \$SSH_SECRET > id_rsa'
 					sh '''
-					cd ansible
-					echo '\$SSH_SECRET' > id_rsa
 					chmod 600 id_rsa
 					ansible-playbook -i staging.yml install-docker.yml --private-key id_rsa
 					ansible-playbook -i staging.yml student_list.yml --private-key id_rsa
