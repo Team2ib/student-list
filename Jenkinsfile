@@ -121,7 +121,7 @@ pipeline {
 				}
 			}
 			environment {
-				SSH_SECRET = credentials('ssh_private_key')
+				SSH_SECRET = credentials('ssh_private_key_2')
 			}
 			steps {
 				script {
@@ -142,7 +142,7 @@ pipeline {
 				} 
 			}
 			environment {
-				SSH_SECRET = credentials('ssh_private_key')
+				SSH_SECRET = credentials('ssh_private_key_2')
 			}
 			steps {
 				script {
@@ -164,7 +164,7 @@ pipeline {
 				}
 			}
 			environment {
-				SSH_SECRET = credentials('ssh_private_key')
+				SSH_SECRET = credentials('ssh_private_key_2')
 			}
 			steps {
 				script {
