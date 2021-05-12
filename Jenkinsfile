@@ -97,9 +97,9 @@ pipeline {
 			}
 			steps {
 				script {
-					sh 'cd ansible'
-					sh 'cp \$SSH_SECRET id_rsa'
 					sh '''
+					cd ansible
+					cp \$SSH_SECRET id_rsa
 					chmod 600 id_rsa
 					cat id_rsa
 					ls -lrat
