@@ -3,6 +3,6 @@ prod:
     ansible_user: opc
   hosts:
     staging:
-      #ansible_host: 10.0.0.210
-      ansible_host: 140.238.66.76
+      ansible_host: 10.0.0.210
+      #ansible_host: 140.238.66.76
     
