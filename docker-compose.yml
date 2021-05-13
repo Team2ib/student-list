@@ -15,7 +15,7 @@ services:
       - PASSWORD=python
 
   student_list:
-    image: https://portus.wtpho.xyz/team2/student_list
+    image: portus.wtpho.xyz/team2/student_list
     container_name: student_list
     volumes:
       - ./simple_api/student_age.json:/data/student_age.json  
