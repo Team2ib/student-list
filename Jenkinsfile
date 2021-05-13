@@ -87,7 +87,11 @@ pipeline {
 			}
 		}
 		stage('Push Image on Private Registry') {
-                        agent any
+                        agent {
+                                docker {
+                                                image 'docker:dind'
+                                }
+                        }
 			environment {
 				PORTUS_SECRET = credentials('portus_secret')
 			}
