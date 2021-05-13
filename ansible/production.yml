@@ -1,4 +1,4 @@
 prod:
   hosts:
     production:
-      ansible_host: 10.0.0.163
+      ansible_host: 132.145.69.131
