@@ -30,7 +30,7 @@ pipeline {
                         }
                         steps {
                                 script {
-                                        sh 'docker run --rm -it -v $(pwd):/data cytopia/yamllint .'
+                                        sh 'docker run --rm -v $(pwd):/data cytopia/yamllint .'
                                 }
                         }
                 }
