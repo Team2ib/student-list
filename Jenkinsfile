@@ -10,7 +10,7 @@ pipeline {
 	}
 	agent none
 	stages {
-                stage('Test Dockerfile with Hadolint to ensure best practices') {
+                stage('Test Dockerfile with Hadolint linter') {
                         agent {
                                 docker {
                                                 image 'hadolint/hadolint:latest-debian'
@@ -54,8 +54,7 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
-					test=$(curl -u ${STUDENT_LIST_LOGIN_USR}:${STUDENT_LIST_LOGIN_PSW} http://$IMAGE_NAME:5000/pozos/api/v1.0/get_student_ages)
-					if [[ "$test" = *'student_ages'* ]]; then exit 0; else exit 1; fi
+					curl -u ${STUDENT_LIST_LOGIN_USR}:${STUDENT_LIST_LOGIN_PSW} http://$IMAGE_NAME:5000/pozos/api/v1.0/get_student_ages | grep -q "student_ages"
                                         '''
                                 }
                         }
