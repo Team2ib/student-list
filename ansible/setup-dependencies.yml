@@ -5,12 +5,21 @@
   - name: Install Docker
     yum:
       name=docker-engine
-      state=latest
+      state=present
     become: true
 
-  - name: Install pip3 on remote machines
-    shell: curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3
+  - name: Download pip3 on remote machines
+    get_url:
+      url: https://bootstrap.pypa.io/get-pip.py 
+      dest: ~/get-pip.py
+      mode: 0644
     become: true
+    register: pip3
+
+  - name: Run pip3 installation
+    command: python3 ~/get-pip.py
+    become: true
+    changed_when: pip3.changed
 
   - name: "Install libselinux-python3"   # required for some ansible module
     yum:

@@ -34,6 +34,22 @@ pipeline {
                                 }
                         }
                 }
+                stage('Test Playbooks with Ansible-lint linter') {
+                        agent {
+                                docker {
+                                                image 'cytopia/ansible-lint'
+						args '--entrypoint=/bin/sh'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh '''
+					ansible-lint ansible/setup-dependencies.yml
+					ansible-lint ansible/student_list.yml
+					'''
+                                }
+                        }
+                }
 		stage('Build Image') {
 			agent {
 				docker {

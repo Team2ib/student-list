@@ -29,6 +29,7 @@
       template:
         src: ../simple_api/student_age.json
         dest: ~/student_age.json
+        mode: 0644
 
     - name: "Create a network"
       docker_network:
@@ -48,6 +49,7 @@
       template:
         src: ../website/index.php
         dest: ~/index.php
+        mode: 0644
 
     - name: Create website containers
       docker_container:
