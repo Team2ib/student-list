@@ -6,7 +6,8 @@ COPY . /
 
 VOLUME /data
 
-RUN apt-get update 
+RUN apt-get update -y
+
 RUN apt-get install -y \
   python-dev=2.7.13-2 \
   python3-dev=3.5.3-1 \
