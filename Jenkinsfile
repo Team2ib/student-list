@@ -54,9 +54,8 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
-					data=$(cat simple_api/student_age.json)
 					test=$(curl -u ${STUDENT_LIST_LOGIN_USR}:${STUDENT_LIST_LOGIN_PSW} http://$IMAGE_NAME:5000/pozos/api/v1.0/get_student_ages)
-					if [[ "$test" = "$data" ]]; then exit 0; else exit 1; fi
+					if [[ "$test" = *"bob"*"alice"* ]]; then exit 0; else exit 1; fi
                                         '''
                                 }
                         }
