@@ -25,13 +25,12 @@ pipeline {
                 stage('Test Yaml with Yamllint linter') {
                         agent {
                                 docker {
-                                                image 'cytopia/yamllint'
-						args '--entrypoint="/bin/ash -c"'
+                                                image 'docker:dind'
                                 }
                         }
                         steps {
                                 script {
-                                        sh 'yamllint .'
+                                        sh 'docker run --rm -it -v $(pwd):/data cytopia/yamllint .'
                                 }
                         }
                 }
