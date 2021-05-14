@@ -13,7 +13,7 @@ pipeline {
                 stage('Test Dockerfile with Hadolint to ensure best practices') {
                         agent {
                                 docker {
-                                                image 'hadolint/hadolint'
+                                                image 'hadolint/hadolint:latest-debian'
                                 }
                         }
                         steps {
