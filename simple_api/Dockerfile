@@ -2,12 +2,20 @@ FROM python:2.7-stretch
 
 LABEL maintainer="team2@team2.com"
 
-ADD . /
+COPY . /
 
 VOLUME /data
 
-RUN apt-get update -y && apt-get install python-dev python3-dev libsasl2-dev python-dev libldap2-dev libssl-dev -y
-RUN pip install flask flask_httpauth flask_simpleldap python-dotenv
+RUN apt-get update -y
+
+RUN apt-get install -y \
+  python-dev=2.7.13-2 \
+  python3-dev=3.5.3-1 \
+  libsasl2-dev=2.1.27\* \
+  libldap2-dev=2.4.44\* \
+  libssl-dev=1.1.0l\*
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 #RUN mkdir /data
 #RUN cp student_age.json /data/student_age.json

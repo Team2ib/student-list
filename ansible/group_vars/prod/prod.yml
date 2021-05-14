@@ -1,0 +1,12 @@
+# Insensitive data
+
+ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
+
+# Sensitive data
+
+ansible_user: "{{ secret_ansible_user }}"
+registry_url: "{{ secret_registry_url }}"
+registry_username: "{{ secret_registry_username }}"
+registry_password: "{{ secret_registry_password }}"
+staging_host: "{{ secret_staging_host }}"
+production_host: "{{ secret_production host }}"

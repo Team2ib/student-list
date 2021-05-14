@@ -4,15 +4,24 @@ pipeline {
 		IMAGE_NAME = "student_list"
                 FRONT_CONTAINER_NAME = "website"
 		IMAGE_TAG = "latest"
-		STAGING = "team2-staging"
-		PRODUCTION = "team2-production"
 		IMAGE_REPO = "team2"
-		IMAGE_REGISTRY = "portus.wtpho.xyz"
-                API_USERNAME = "toto"
-                API_PASSWORD = "python"
+		IMAGE_REGISTRY = credentials('registry_url')
+                STUDENT_LIST_LOGIN = credentials('student_list_login')
 	}
 	agent none
 	stages {
+                stage('Test Dockerfile with Hadolint linter') {
+                        agent {
+                                docker {
+                                                image 'hadolint/hadolint:latest-debian'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh 'hadolint simple_api/Dockerfile'
+                                }
+                        }
+                }
 		stage('Build Image') {
 			agent {
 				docker {
@@ -45,7 +54,7 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
-					curl -u toto:python http://$IMAGE_NAME:5000/pozos/api/v1.0/get_student_ages | grep -q "alice"
+					curl -u ${STUDENT_LIST_LOGIN_USR}:${STUDENT_LIST_LOGIN_PSW} http://$IMAGE_NAME:5000/pozos/api/v1.0/get_student_ages | grep -q "student_ages"
                                         '''
                                 }
                         }
@@ -60,7 +69,7 @@ pipeline {
                                 script {
                                         sh '''
 					docker rm -vf ${FRONT_CONTAINER_NAME} || echo 0
-					docker run -d --network $JENKINS_CONTAINER_NETWORK -e USERNAME=$API_USERNAME -e PASSWORD=$API_PASSWORD -v ${PWD}/website:/var/www/html --name $FRONT_CONTAINER_NAME php:apache
+					docker run -d --network $JENKINS_CONTAINER_NETWORK -e USERNAME=${STUDENT_LIST_LOGIN_USR} -e PASSWORD=${STUDENT_LIST_LOGIN_PSW} -v ${PWD}/website:/var/www/html --name $FRONT_CONTAINER_NAME php:apache
 					'''
                                 }
                         }
@@ -113,6 +122,7 @@ pipeline {
 			}
 			environment {
 				SSH_SECRET = credentials('ssh_private_key')
+				ANSIBLE_VAULTPASS = credentials('ansible_vaultpass')
 			}
 			steps {
 				script {
@@ -120,8 +130,9 @@ pipeline {
 					cd ansible
 					cp \$SSH_SECRET id_rsa
 					chmod 600 id_rsa
-					ansible-playbook -i staging.yml setup-dependencies.yml --private-key id_rsa
-					ansible-playbook -i staging.yml student_list.yml --private-key id_rsa
+					cp \$ANSIBLE_VAULTPASS .vault_pass
+					ansible-playbook -i staging.yml setup-dependencies.yml --private-key id_rsa --vault-password-file=.vault_pass
+					ansible-playbook -i staging.yml student_list.yml --private-key id_rsa --vault-password-file=.vault_pass
 					'''
 				}
 			}
@@ -135,6 +146,7 @@ pipeline {
 			}
 			environment {
 				SSH_SECRET = credentials('ssh_private_key')
+				ANSIBLE_VAULTPASS = credentials('ansible_vaultpass')
 			}
 			steps {
 				script {
@@ -142,7 +154,8 @@ pipeline {
 					cd ansible
 					cp \$SSH_SECRET id_rsa
 					chmod 600 id_rsa
-					ansible-playbook -i staging.yml tests.yml --private-key id_rsa
+					cp \$ANSIBLE_VAULTPASS .vault_pass
+					ansible-playbook -i staging.yml tests.yml --private-key id_rsa --vault-password-file=.vault_pass
 					'''
 				}
 			}
@@ -156,6 +169,7 @@ pipeline {
 			}
 			environment {
 				SSH_SECRET = credentials('ssh_private_key')
+				ANSIBLE_VAULTPASS = credentials('ansible_vaultpass')
 			}
 			steps {
 				script {
@@ -163,8 +177,9 @@ pipeline {
 					cd ansible
 					cp \$SSH_SECRET id_rsa
 					chmod 600 id_rsa
-					ansible-playbook -i production.yml setup-dependencies.yml --private-key id_rsa
-					ansible-playbook -i production.yml student_list.yml --private-key id_rsa
+					cp \$ANSIBLE_VAULTPASS .vault_pass
+					ansible-playbook -i production.yml setup-dependencies.yml --private-key id_rsa --vault-password-file=.vault_pass
+					ansible-playbook -i production.yml student_list.yml --private-key id_rsa --vault-password-file=.vault_pass
 					'''
 				}
 			}
@@ -178,6 +193,7 @@ pipeline {
 			}
 			environment {
 				SSH_SECRET = credentials('ssh_private_key')
+				ANSIBLE_VAULTPASS = credentials('ansible_vaultpass')
 			}
 			steps {
 				script {
@@ -185,7 +201,8 @@ pipeline {
 					cd ansible
 					cp \$SSH_SECRET id_rsa
 					chmod 600 id_rsa
-					ansible-playbook -i production.yml tests.yml --private-key id_rsa
+					cp \$ANSIBLE_VAULTPASS .vault_pass
+					ansible-playbook -i production.yml tests.yml --private-key id_rsa --vault-password-file=.vault_pass
 					'''
 				}
 			}
