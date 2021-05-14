@@ -26,7 +26,7 @@ pipeline {
                         agent {
                                 docker {
                                                 image 'cytopia/yamllint'
-						args '--entrypoint=/bin/bash'
+						args '--entrypoint="/bin/ash -c"'
                                 }
                         }
                         steps {
