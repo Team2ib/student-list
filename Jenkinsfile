@@ -10,6 +10,18 @@ pipeline {
 	}
 	agent none
 	stages {
+                stage('Test Dockerfile with Hadolint to ensure best practices') {
+                        agent {
+                                docker {
+                                                image 'hadolint/hadolint'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh 'hadolint simple_api/Dockerfile'
+                                }
+                        }
+                }
 		stage('Build Image') {
 			agent {
 				docker {
