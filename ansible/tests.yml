@@ -6,7 +6,7 @@
       uri:
         url: http://{{ ansible_host }}
         method: GET
-        return_content: yes
+        return_content: true
       register: this
       failed_when: "'Student Checking App' not in this.content"
 ...

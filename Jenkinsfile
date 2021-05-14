@@ -22,6 +22,18 @@ pipeline {
                                 }
                         }
                 }
+                stage('Test Yaml with Yamllint linter') {
+                        agent {
+                                docker {
+                                                image 'cytopia/yamllint'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh 'yamllint .'
+                                }
+                        }
+                }
 		stage('Build Image') {
 			agent {
 				docker {
