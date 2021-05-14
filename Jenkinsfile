@@ -120,7 +120,7 @@ pipeline {
 					cd ansible
 					cp \$SSH_SECRET id_rsa
 					chmod 600 id_rsa
-					ansible-playbook -i staging.yml install-docker.yml --private-key id_rsa
+					ansible-playbook -i staging.yml setup-dependencies.yml --private-key id_rsa
 					ansible-playbook -i staging.yml student_list.yml --private-key id_rsa
 					'''
 				}
@@ -163,7 +163,7 @@ pipeline {
 					cd ansible
 					cp \$SSH_SECRET id_rsa
 					chmod 600 id_rsa
-					ansible-playbook -i production.yml install-docker.yml --private-key id_rsa
+					ansible-playbook -i production.yml setup-dependencies.yml --private-key id_rsa
 					ansible-playbook -i production.yml student_list.yml --private-key id_rsa
 					'''
 				}

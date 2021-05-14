@@ -1,11 +1,22 @@
 ---
-- name: Install docker on a Centos 7 machine
-  hosts: client
+- name: Install docker on Oracle Linux
+  hosts: prod
   tasks:
   - name: Install Docker
     yum: 
       name=docker-engine 
       state=latest
+    become: yes
+
+  - name: Install pip3 on remote machines
+    shell: curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3
+    become: yes
+
+  - name: "Install libselinux-python3" # required for some ansible module to work
+    yum:
+      name: libselinux-python3
+      state: present
+      update_cache: yes
     become: yes
 
   - name: Start and enable the Docker daemon
@@ -20,13 +31,6 @@
       name: "{{ ansible_user }}"
       groups: docker
       append: yes
-    become: yes
-
-  - name: Start and enable the Docker daemon
-    service: 
-      name=docker 
-      state=started 
-      enabled=yes
     become: yes
 
   - name: Install Docker Module for Python
