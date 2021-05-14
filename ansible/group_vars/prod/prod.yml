@@ -11,7 +11,7 @@ registry_url: "{{ secret_registry_url }}"
 registry_username: "{{ secret_registry_username }}"
 registry_password: "{{ secret_registry_password }}"
 staging_host: "{{ secret_staging_host }}"
-production_host: "{{ secret_production host }}"
+production_host: "{{ secret_production_host }}"
 api_username: "{{ secret_api_username }}"
 api_password: "{{ secret_api_password }}"
 
