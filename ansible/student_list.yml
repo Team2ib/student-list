@@ -7,7 +7,7 @@
     - name: Remove containers api
       docker_container:
         name: "student_list"
-        image: "132.145.77.137:5000/team2/student_list"
+        image: "{{ registry_url }}/team2/student_list"
         state: absent
       vars:
         ansible_python_interpreter: /usr/bin/python3
@@ -18,24 +18,24 @@
         image: "php:apache"
         state: absent
 
-    - name: "Allow insecure registry"
-      copy:
-        content: { "insecure-registries":["132.145.77.137:5000"] }
-        dest: /etc/docker/daemon.json
-      become: yes
-
-    - name: Start and enable the Docker daemon
-      service:
-        name=docker
-        state=restarted
-        enabled=yes
-      become: yes
+#    - name: "Allow insecure registry"  ## not required anymore since our registry now work on https
+#      copy:
+#        content: { "insecure-registries":["<ip>:<port>"] }
+#        dest: /etc/docker/daemon.json
+#      become: yes
+#
+#    - name: Start and enable the Docker daemon
+#      service:
+#        name=docker
+#        state=restarted
+#        enabled=yes
+#      become: yes
 
     - name: Log into private registry and force re-authorization
       community.docker.docker_login:
-        registry_url: 132.145.77.137:5000
-        username: team2
-        password: GeorgeWashington
+        registry_url: "{{ registry_url }}"
+        username: "{{ registry_username }}"
+        password: "{{ registry_password }}"
         reauthorize: yes
 
     - name: Generate student_age.json
@@ -50,7 +50,7 @@
     - name: Create api containers
       docker_container:
         name: "student_list"
-        image: "132.145.77.137:5000/team2/student_list"
+        image: "{{ registry_url }}/team2/student_list"
         pull: yes
         volumes:
           - ~/student_age.json:/data/student_age.json

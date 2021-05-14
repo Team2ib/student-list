@@ -11,11 +11,11 @@ services:
     depends_on:
       - student_list
     environment:
-      - USERNAME=toto
-      - PASSWORD=python
+      - USERNAME="${API_USERNAME}"
+      - PASSWORD="${API_PASSWORD}"
 
   student_list:
-    image: portus.wtpho.xyz/team2/student_list
+    image: "${REGISTRY_URL}/team2/student_list"
     container_name: student_list
     volumes:
       - ./simple_api/student_age.json:/data/student_age.json  
