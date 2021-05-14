@@ -110,7 +110,7 @@ pipeline {
 			}
 			environment {
 				SSH_SECRET = credentials('ssh_private_key')
-				ANSIBLE_VAULT_PASS = credentials('ansible_vaultpass')
+				ANSIBLE_VAULTPASS = credentials('ansible_vaultpass')
 			}
 			steps {
 				script {
@@ -134,7 +134,7 @@ pipeline {
 			}
 			environment {
 				SSH_SECRET = credentials('ssh_private_key')
-				ANSIBLE_VAULT_PASS = credentials('ansible_vaultpass')
+				ANSIBLE_VAULTPASS = credentials('ansible_vaultpass')
 			}
 			steps {
 				script {
@@ -157,7 +157,7 @@ pipeline {
 			}
 			environment {
 				SSH_SECRET = credentials('ssh_private_key')
-				ANSIBLE_VAULT_PASS = credentials('ansible_vaultpass')
+				ANSIBLE_VAULTPASS = credentials('ansible_vaultpass')
 			}
 			steps {
 				script {
@@ -181,7 +181,7 @@ pipeline {
 			}
 			environment {
 				SSH_SECRET = credentials('ssh_private_key')
-				ANSIBLE_VAULT_PASS = credentials('ansible_vaultpass')
+				ANSIBLE_VAULTPASS = credentials('ansible_vaultpass')
 			}
 			steps {
 				script {
