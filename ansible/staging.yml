@@ -1,4 +1,6 @@
+---
 prod:
   hosts:
     staging:
       ansible_host: "{{ staging_host }}"
+...

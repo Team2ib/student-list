@@ -1,4 +1,6 @@
+---
 prod:
   hosts:
     production:
-      ansible_host: {{ production_host }}
+      ansible_host: "{{ production_host }}"
+...

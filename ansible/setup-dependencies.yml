@@ -3,35 +3,44 @@
   hosts: prod
   tasks:
   - name: Install Docker
-    yum: 
-      name=docker-engine 
-      state=latest
-    become: yes
+    yum:
+      name=docker-engine
+      state=present
+    become: true
 
-  - name: Install pip3 on remote machines
-    shell: curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3
-    become: yes
+  - name: Download pip3 on remote machines
+    get_url:
+      url: https://bootstrap.pypa.io/get-pip.py
+      dest: ~/get-pip.py
+      mode: 0644
+    become: true
+    register: pip3
 
-  - name: "Install libselinux-python3" # required for some ansible module to work
+  - name: Run pip3 installation
+    command: python3 ~/get-pip.py
+    become: true
+    changed_when: pip3.changed
+
+  - name: "Install libselinux-python3"   # required for some ansible module
     yum:
       name: libselinux-python3
       state: present
-      update_cache: yes
-    become: yes
+      update_cache: true
+    become: true
 
   - name: Start and enable the Docker daemon
-    service: 
-      name=docker 
-      state=started 
-      enabled=yes
-    become: yes
+    service:
+      name=docker
+      state=started
+      enabled=true
+    become: true
 
   - name: Add remote user to docker group
     user:
       name: "{{ ansible_user }}"
       groups: docker
-      append: yes
-    become: yes
+      append: true
+    become: true
 
   - name: Install Docker Module for Python
     pip:

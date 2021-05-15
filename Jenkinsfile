@@ -22,6 +22,33 @@ pipeline {
                                 }
                         }
                 }
+                stage('Test Yaml with Yamllint linter') {
+                        agent {
+                                docker {
+                                                image 'docker:dind'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh 'docker run --rm -v $(pwd):/data cytopia/yamllint .'
+                                }
+                        }
+                }
+                stage('Test Playbooks with Ansible-lint linter') {
+                        agent {
+                                docker {
+                                                image 'docker:dind'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh '''
+					docker run --rm -v $(pwd):/data cytopia/ansible-lint ansible/setup-dependencies.yml
+					docker run --rm -v $(pwd):/data cytopia/ansible-lint ansible/student_list.yml
+					'''
+                                }
+                        }
+                }
 		stage('Build Image') {
 			agent {
 				docker {

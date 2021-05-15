@@ -1,4 +1,4 @@
---- 
+---
 - name: "student_list installation"
   hosts: prod
   vars:
@@ -18,30 +18,18 @@
         image: "php:apache"
         state: absent
 
-#    - name: "Allow insecure registry"  ## not required anymore since our registry now work on https
-#      copy:
-#        content: { "insecure-registries":["<ip>:<port>"] }
-#        dest: /etc/docker/daemon.json
-#      become: yes
-#
-#    - name: Start and enable the Docker daemon
-#      service:
-#        name=docker
-#        state=restarted
-#        enabled=yes
-#      become: yes
-
     - name: Log into private registry and force re-authorization
       community.docker.docker_login:
         registry_url: "{{ registry_url }}"
         username: "{{ registry_username }}"
         password: "{{ registry_password }}"
-        reauthorize: yes
+        reauthorize: true
 
     - name: Generate student_age.json
       template:
         src: ../simple_api/student_age.json
         dest: ~/student_age.json
+        mode: 0644
 
     - name: "Create a network"
       docker_network:
@@ -51,7 +39,7 @@
       docker_container:
         name: "student_list"
         image: "{{ registry_url }}/team2/student_list"
-        pull: yes
+        pull: true
         volumes:
           - ~/student_age.json:/data/student_age.json
         networks:
@@ -61,18 +49,19 @@
       template:
         src: ../website/index.php
         dest: ~/index.php
+        mode: 0644
 
     - name: Create website containers
       docker_container:
         name: "website"
         image: "php:apache"
         ports: 80:80
-        pull: yes
+        pull: true
         volumes:
           - ~/index.php:/var/www/html/index.php
         networks:
           - name: "student_list"
         env:
-          USERNAME: "toto"
-          PASSWORD: "python"
+          USERNAME: "{{ api_username }}"
+          PASSWORD: "{{ api_password }}"
 ...
