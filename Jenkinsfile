@@ -252,9 +252,9 @@ pipeline {
                         steps {
                                 script {
                                         sh '''
-					docker volume prune
-					docker image prune
-					docker network prune
+					docker volume prune -f
+					docker image prune -f
+					docker network prune -f
 					'''
                                 }
                         }
