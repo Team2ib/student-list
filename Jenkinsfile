@@ -243,5 +243,21 @@ pipeline {
 				}
 			}
 		}
+                stage('Docker Image/Volume Cleanup') {
+                        agent {
+                                docker {
+                                                image 'docker:dind'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh '''
+					docker volume prune
+					docker image prune
+					docker network prune
+					'''
+                                }
+                        }
+                }
 	}
 }
