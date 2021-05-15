@@ -44,6 +44,7 @@ pipeline {
                                 script {
                                         sh '''
 					docker run --rm -v $(pwd):/data cytopia/ansible-lint ansible/setup-dependencies.yml
+					docker run --rm -v $(pwd):/data cytopia/ansible-lint ansible/portainer-agent.yml
 					docker run --rm -v $(pwd):/data cytopia/ansible-lint ansible/student_list.yml
 					'''
                                 }
@@ -162,6 +163,7 @@ pipeline {
 					'''
 					sh '''
 					cd ansible
+					ansible-playbook -i staging.yml portainer-agent.yml --private-key id_rsa --vault-password-file=.vault_pass
 					ansible-playbook -i staging.yml student_list.yml --private-key id_rsa --vault-password-file=.vault_pass
 					'''
 				}
@@ -212,6 +214,7 @@ pipeline {
 					'''
 					sh '''
 					cd ansible
+					ansible-playbook -i production.yml portainer-agent.yml --private-key id_rsa --vault-password-file=.vault_pass					
 					ansible-playbook -i production.yml student_list.yml --private-key id_rsa --vault-password-file=.vault_pass
 					'''
 				}
@@ -240,5 +243,21 @@ pipeline {
 				}
 			}
 		}
+                stage('Docker Image/Volume Cleanup') {
+                        agent {
+                                docker {
+                                                image 'docker:dind'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh '''
+					docker volume prune -f
+					docker image prune -f
+					docker network prune -f
+					'''
+                                }
+                        }
+                }
 	}
 }
