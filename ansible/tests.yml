@@ -1,6 +1,6 @@
 ---
 - name: "Tests"
-  hosts: staging
+  hosts: prod
   tasks:
     - name: Test availability slave
       uri:
