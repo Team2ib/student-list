@@ -4,7 +4,7 @@ LABEL maintainer="team2@team2.com"
 
 COPY . /
 
-VOLUME /data
+#VOLUME /data
 
 RUN apt-get update -y
 
