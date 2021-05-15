@@ -159,6 +159,9 @@ pipeline {
 					chmod 600 id_rsa
 					cp \$ANSIBLE_VAULTPASS .vault_pass
 					ansible-playbook -i staging.yml setup-dependencies.yml --private-key id_rsa --vault-password-file=.vault_pass
+					'''
+					sh '''
+					cd ansible
 					ansible-playbook -i staging.yml student_list.yml --private-key id_rsa --vault-password-file=.vault_pass
 					'''
 				}
@@ -206,6 +209,9 @@ pipeline {
 					chmod 600 id_rsa
 					cp \$ANSIBLE_VAULTPASS .vault_pass
 					ansible-playbook -i production.yml setup-dependencies.yml --private-key id_rsa --vault-password-file=.vault_pass
+					'''
+					sh '''
+					cd ansible
 					ansible-playbook -i production.yml student_list.yml --private-key id_rsa --vault-password-file=.vault_pass
 					'''
 				}

@@ -3,4 +3,6 @@ prod:
   hosts:
     production:
       ansible_host: "{{ production_host }}"
+    production-bis:
+      ansible_host: "{{ production_host_bis }}"
 ...
