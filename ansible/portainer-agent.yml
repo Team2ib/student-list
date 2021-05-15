@@ -1,10 +1,10 @@
 ---
-- name: "student_list installation"
+- name: "Portus agent deployment"
   hosts: prod
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - name: Create api containers
+    - name: Create portus agent containers
       docker_container:
         name: "portainer_agent"
         image: "portainer/agent"

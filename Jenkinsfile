@@ -44,6 +44,7 @@ pipeline {
                                 script {
                                         sh '''
 					docker run --rm -v $(pwd):/data cytopia/ansible-lint ansible/setup-dependencies.yml
+					docker run --rm -v $(pwd):/data cytopia/ansible-lint ansible/portainer-agent.yml
 					docker run --rm -v $(pwd):/data cytopia/ansible-lint ansible/student_list.yml
 					'''
                                 }
