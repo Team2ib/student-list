@@ -59,8 +59,8 @@ pipeline {
 			steps {
 				script {
 					sh '''
-					docker build -t $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG simple_api
-					echo ${GIT_COMMIT}
+					docker build -t $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:${GIT_COMMIT} simple_api
+					docker tag $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:${GIT_COMMIT} $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:${IMAGE_TAG}
 					'''
 				}
 			}
@@ -139,7 +139,8 @@ pipeline {
 				script {
 					sh '''
 					docker login -u $PORTUS_SECRET_USR -p $PORTUS_SECRET_PSW $IMAGE_REGISTRY
-					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:$IMAGE_TAG
+					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:${GIT_COMMIT}
+					docker push $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:${IMAGE_TAG}
 					'''
 				}
 			}
