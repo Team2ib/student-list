@@ -17,7 +17,7 @@ pipeline {
                                 }
                         }
 			environment {
-				student_age_file_path = "${PWD}/student_age.json"
+				student_age_file_path = ${WORKSPACE}/simple_api/student_age.json
 			}
                         steps {
                                 script {
@@ -31,7 +31,6 @@ pipeline {
   					  libldap2-dev=2.4.44* \
   					  libssl-dev=1.1.0l*
   					pip install --no-cache-dir -r requirements.txt
-					echo $student_age_file_path
 					python -m unittest discover -s . -p 'tests.py'
 					'''
                                 }
