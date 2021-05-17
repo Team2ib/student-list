@@ -16,9 +16,6 @@ pipeline {
                                                 image 'python:2.7-stretch'
                                 }
                         }
-			environment {
-				student_age_file_path = ${WORKSPACE}/simple_api/student_age.json
-			}
                         steps {
                                 script {
                                         sh '''
@@ -31,6 +28,8 @@ pipeline {
   					  libldap2-dev=2.4.44* \
   					  libssl-dev=1.1.0l*
   					pip install --no-cache-dir -r requirements.txt
+					mkdir -p /data
+					ln -s ${PWD}/student_age.json /data/student_age.json
 					python -m unittest discover -s . -p 'tests.py'
 					'''
                                 }
