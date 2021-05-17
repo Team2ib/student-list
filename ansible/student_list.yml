@@ -33,7 +33,7 @@
           - name: "student_list"
         healthcheck:
           test: >
-            curl -fsu "{{ secret_api_username }}":"{{ secret_api_password }}" 
+            curl -fsu "{{ secret_api_username }}":"{{ secret_api_password }}"
             http://localhost:5000/pozos/api/v1.0/get_student_ages || exit 1
           timeout: 30s
           interval: 1m
