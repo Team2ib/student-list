@@ -4,20 +4,6 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - name: Remove containers api
-      docker_container:
-        name: "student_list"
-        image: "{{ registry_url }}/team2/student_list"
-        state: absent
-      vars:
-        ansible_python_interpreter: /usr/bin/python3
-
-    - name: Remove containers website
-      docker_container:
-        name: "website"
-        image: "php:apache"
-        state: absent
-
     - name: Log into private registry and force re-authorization
       community.docker.docker_login:
         registry_url: "{{ registry_url }}"
@@ -40,6 +26,7 @@
         name: "student_list"
         image: "{{ registry_url }}/team2/student_list"
         pull: true
+        recreate: true
         volumes:
           - ~/student_age.json:/data/student_age.json
         networks:
@@ -57,6 +44,7 @@
         image: "php:apache"
         ports: 80:80
         pull: true
+        recreate: true
         volumes:
           - ~/index.php:/var/www/html/index.php
         networks:
