@@ -10,6 +10,31 @@ pipeline {
 	}
 	agent none
 	stages {
+                stage('Unit Testing Python App') {
+                        agent {
+                                docker {
+                                                image 'python:2.7-stretch'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh '''
+					cd simple_api
+					apt-get update -y
+  					apt-get install -y \
+  					  python-dev=2.7.13-2 \
+  				 	  python3-dev=3.5.3-1 \
+  					  libsasl2-dev=2.1.27* \
+  					  libldap2-dev=2.4.44* \
+  					  libssl-dev=1.1.0l*
+  					pip install --no-cache-dir -r requirements.txt
+					mkdir -p /data
+					ln -s ${PWD}/student_age.json /data/student_age.json
+					python -m unittest discover -s . -p 'tests.py'
+					'''
+                                }
+                        }
+                }
                 stage('Test Dockerfile with Hadolint linter') {
                         agent {
                                 docker {
