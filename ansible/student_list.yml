@@ -32,7 +32,7 @@
         networks:
           - name: "student_list"
         healthcheck:
-          test: curl -fs http://localhost:5000/pozos/api/v1.0/get_student_ages || exit 1
+          test: curl -f localhost:5000/pozos/api/v1.0/get_student_ages || exit 1
           timeout: 30s
           interval: 1m
           retries: 3
@@ -62,7 +62,7 @@
           timeout: 30s
           interval: 1m
           retries: 3
-          
+
     - name: Prune everything to save space
       community.docker.docker_prune:
         containers: yes
