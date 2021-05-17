@@ -24,9 +24,9 @@ pipeline {
   					apt-get install -y \
   					  python-dev=2.7.13-2 \
   				 	  python3-dev=3.5.3-1 \
-  					  libsasl2-dev=2.1.27\* \
-  					  libldap2-dev=2.4.44\* \
-  					  libssl-dev=1.1.0l\*
+  					  libsasl2-dev=2.1.27* \
+  					  libldap2-dev=2.4.44* \
+  					  libssl-dev=1.1.0l*
   					pip install --no-cache-dir -r requirements.txt
                                         export student_age_file_path=${PWD}
 					python -m unittest discover -s . -p 'tests.py'
