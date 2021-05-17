@@ -29,6 +29,7 @@ pipeline {
   					  libssl-dev=1.1.0l*
   					pip install --no-cache-dir -r requirements.txt
                                         export student_age_file_path=${PWD}
+					echo $student_age_file_path
 					python -m unittest discover -s . -p 'tests.py'
 					'''
                                 }
