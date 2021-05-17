@@ -284,6 +284,7 @@ pipeline {
 					docker volume prune -f
 					docker image prune -f
 					docker network prune -f
+					docker rmi $IMAGE_REGISTRY/$IMAGE_REPO/$IMAGE_NAME:${GIT_COMMIT}
 					'''
                                 }
                         }
