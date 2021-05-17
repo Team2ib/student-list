@@ -17,7 +17,7 @@ pipeline {
                                 }
                         }
 			environment {
-				student_age_file_path = ${PWD}"/student_age.json"
+				student_age_file_path = "${PWD}/student_age.json"
 			}
                         steps {
                                 script {
