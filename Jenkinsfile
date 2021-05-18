@@ -35,6 +35,18 @@ pipeline {
                                 }
                         }
                 }
+                stage('Test Php with phplint linter') {
+                        agent {
+                                docker {
+                                                image 'docker:dind'
+                                }
+                        }
+                        steps {
+                                script {
+                                        sh 'docker run -it --rm -v $(pwd):/data cytopia/phplint'
+                                }
+                        }
+                }
                 stage('Test Dockerfile with Hadolint linter') {
                         agent {
                                 docker {
