@@ -10,13 +10,13 @@
         username: "{{ registry_username }}"
         password: "{{ registry_password }}"
         reauthorize: true
-        
+
     - name: Create api directory if it does not exist
       ansible.builtin.file:
         path: ~/simple_api
         state: directory
         mode: '0755'
-        
+
     - name: Generate student_age.json
       template:
         src: ../simple_api/student_age.json
