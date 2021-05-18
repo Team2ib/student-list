@@ -34,7 +34,7 @@
         pull: true
         recreate: true
         volumes:
-          - ~/student_age.json:/data/student_age.json
+          - ~/simple_api/student_age.json:/data/student_age.json
         networks:
           - name: "student_list"
         healthcheck:
