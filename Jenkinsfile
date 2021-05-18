@@ -43,7 +43,7 @@ pipeline {
                         }
                         steps {
                                 script {
-                                        sh 'docker run -it --rm -v $(pwd):/data cytopia/phplint'
+                                        sh 'docker run --rm -v $(pwd):/data cytopia/phplint'
                                 }
                         }
                 }
