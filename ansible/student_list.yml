@@ -39,10 +39,28 @@
           interval: 1m
           retries: 3
 
-    - name: Generate website
+    - name: Create website directory if it does not exist
+      ansible.builtin.file:
+        path: ~/website
+        state: directory
+        mode: '0755'
+
+    - name: Generate website index.php
       template:
         src: ../website/index.php
-        dest: ~/index.php
+        dest: ~/website/index.php
+        mode: 0644
+
+    - name: Generate website style.css
+      template:
+        src: ../website/style.css
+        dest: ~/website/style.css
+        mode: 0644
+
+    - name: Generate website script.js
+      template:
+        src: ../website/script.js
+        dest: ~/website/script.js
         mode: 0644
 
     - name: Create website containers
@@ -53,7 +71,7 @@
         pull: true
         recreate: true
         volumes:
-          - ~/index.php:/var/www/html/index.php
+          - ~/website:/var/www/website
         networks:
           - name: "student_list"
         env:
