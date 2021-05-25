@@ -1,4 +1,10 @@
-[![Build Status](https://jenkins.wtpho.xyz/buildStatus/icon?job=student_list)](https://jenkins.wtpho.xyz/job/student_list/)
+# Summary
+
+![Schema_Fil_Rouge_2](https://user-images.githubusercontent.com/66330398/119460570-1ce08e80-bd3f-11eb-9840-28a62510f0c7.png)
+
+See commented text in README for more infos.
+
+<!--
 
 # student-list 
 This repo is a simple application to list student with a webserver (PHP) and API (Flask)
