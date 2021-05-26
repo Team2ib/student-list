@@ -16,8 +16,12 @@ app.debug = True
 
 @auth.get_password
 def get_password(username):
-    if username == 'toto':
-        return 'python'
+    if os.getenv("USERNAME") is None or os.getenv("PASSWORD") is None:
+        if username == 'toto':
+            return 'python'
+    else:
+        if username == os.getenv("USERNAME"):
+            return os.getenv("PASSWORD")
     return None
 
 @auth.error_handler
