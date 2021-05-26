@@ -19,4 +19,7 @@ services:
     container_name: student_list
     volumes:
       - ./simple_api/student_age.json:/data/student_age.json
+    environment:
+      - USERNAME="${API_USERNAME}"
+      - PASSWORD="${API_PASSWORD}"
 ...
