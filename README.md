@@ -2,7 +2,9 @@
 
 ![Schema_Fil_Rouge_2](https://user-images.githubusercontent.com/66330398/119460570-1ce08e80-bd3f-11eb-9840-28a62510f0c7.png)
 
-See commented text in README for more infos.
+See commented text in README for more infos or the following links to see how the "base" original project: 
+
+https://github.com/diranetafen/student-list
 
 <!--
 
