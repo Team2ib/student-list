@@ -33,6 +33,9 @@
         image: "{{ registry_url }}/team2/student_list"
         pull: true
         recreate: true
+        env:
+          USERNAME: "{{ api_username }}"
+          PASSWORD: "{{ api_password }}"
         volumes:
           - ~/simple_api/student_age.json:/data/student_age.json
         networks:
